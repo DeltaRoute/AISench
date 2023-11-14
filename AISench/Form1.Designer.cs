@@ -104,14 +104,14 @@
             // sELECTToolStripMenuItem
             // 
             this.sELECTToolStripMenuItem.Name = "sELECTToolStripMenuItem";
-            this.sELECTToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sELECTToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.sELECTToolStripMenuItem.Text = "Выбрать всё";
             this.sELECTToolStripMenuItem.Click += new System.EventHandler(this.sELECTToolStripMenuItem_Click);
             // 
             // добавитьНовыйToolStripMenuItem
             // 
             this.добавитьНовыйToolStripMenuItem.Name = "добавитьНовыйToolStripMenuItem";
-            this.добавитьНовыйToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.добавитьНовыйToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.добавитьНовыйToolStripMenuItem.Text = "Добавить новый";
             this.добавитьНовыйToolStripMenuItem.Click += new System.EventHandler(this.добавитьНовыйToolStripMenuItem_Click);
             // 
@@ -151,7 +151,7 @@
             // изменитьToolStripMenuItem
             // 
             this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.изменитьToolStripMenuItem.Text = "Изменить";
             this.изменитьToolStripMenuItem.Click += new System.EventHandler(this.изменитьToolStripMenuItem_Click);
             // 
@@ -160,6 +160,7 @@
             this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
             this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.удалитьToolStripMenuItem.Text = "Удалить";
+            this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
             // 
             // помощьToolStripMenuItem
             // 
@@ -230,7 +231,8 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "f";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

@@ -17,8 +17,10 @@ namespace AISench
         OleDbDataAdapter reader;
         DataTable table;
         int gbVis = 0;
+        bool signed;
         public Form1()
         {
+            
             InitializeComponent();
             groupBox1.Visible = false;
             dataGridView1.Size = new Size(
@@ -38,6 +40,12 @@ namespace AISench
 
         private void подключитьсяToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            using (AutentificationF signIn = new AutentificationF())
+            {
+                signIn.ShowDialog();
+                signed = signIn.Signed();
+            }
+            if (!signed) return;
             try
             {
                 //MessageBox.Show("Connectiong...");
@@ -112,7 +120,42 @@ namespace AISench
         private void изменитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             book result;
+            using (InsertForm update = new InsertForm(dataGridView1.CurrentRow))
+            {
+                update.ShowDialog();
+                result=update.show();
+            }
+            if (result.Exist)
+            {
+                if (command != null)
+                    command.Dispose();
+                command = new OleDbCommand("UPDATE [Книги]" +
+                    $"SET [Артикул] = {result.Articul},[ФИО] = '{result.FIO}',[Название] = '{result.AuthorName}',[Год издания] ={result.Year},[Цена] = {result.Price},[Жанр] = '{result.Genre}'" +
+                    $"WHERE [Код]={dataGridView1.CurrentRow.Cells[0].Value}", connection);
+                command.ExecuteNonQuery();
+                toolStripStatusLabel1.Text = "Complete.";
+            }
+        }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(connection.State == ConnectionState.Open)
+                connection.Close();
+        }
+
+        private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Удалить эту запись?","Предупреждение",MessageBoxButtons.OKCancel);
+            if(dialogResult == DialogResult.OK)
+            {
+                DataGridViewRow row = dataGridView1.CurrentRow;
+                if (command != null)
+                    command.Dispose();
+                command = new OleDbCommand("DELETE FROM [Книги]" +
+                    $"WHERE [Код]={row.Cells[0].Value}", connection);
+                command.ExecuteNonQuery();
+                toolStripStatusLabel1.Text = "Complete.";
+            }
         }
     }
 }

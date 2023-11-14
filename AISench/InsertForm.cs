@@ -28,16 +28,18 @@ namespace AISench
         public InsertForm()
         {
             InitializeComponent();
+            button1.Text = "Добавить";
         }
-        public InsertForm(string _Articul, string _FIO, string _AuthorName, string _Year, string _Price, string _Genre)
+        public InsertForm(DataGridViewRow row)
         {
             InitializeComponent();
-            textBox1.Text = _Articul;
-            textBox2.Text = _FIO;
-            textBox3.Text = _AuthorName;
-            textBox4.Text = _Year;
-            textBox5.Text = _Price;
-            textBox6.Text = _Genre;
+            textBox1.Text = row.Cells[1].Value.ToString();
+            textBox2.Text = row.Cells[2].Value.ToString();
+            textBox3.Text = row.Cells[3].Value.ToString();
+            textBox4.Text = row.Cells[4].Value.ToString();
+            textBox5.Text = row.Cells[5].Value.ToString();
+            textBox6.Text = row.Cells[6].Value.ToString();
+            button1.Text = "Изменить";
         }
         public book show()
         {
@@ -50,6 +52,7 @@ namespace AISench
             result.Exist = confirm;
             return result;
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             Articul = textBox1.Text;
@@ -58,7 +61,7 @@ namespace AISench
             Year = textBox4.Text;
             Price = textBox5.Text;
             Genre = textBox6.Text;
-            int articul,year, price;
+            //articul,year, price;
             string status = "";
            
             try
@@ -103,9 +106,11 @@ namespace AISench
                 confirm = false;
                 status += "Некорректные данные в поле 'Жанр'.";
             }
-            lb_status.Text = status;
+                lb_status.Text = status;
             if (confirm)
+            {
                 this.Dispose();
+            }
         }
     }
 }
