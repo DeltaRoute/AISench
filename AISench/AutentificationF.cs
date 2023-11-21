@@ -16,13 +16,12 @@ namespace AISench
     public struct User
     {
         public string Name { get; set; }
-        public string Password { get; set; }
         public string Role { get; set; }
     }
     public partial class AutentificationF : Form
     {
-        OleDbConnection connection;
-        OleDbCommand command;
+        User user;
+        
         public AutentificationF()
         {
             InitializeComponent();
@@ -33,23 +32,40 @@ namespace AISench
         {
             string login = tb_login.Text;
             string password = tb_password.Text;
-            connection = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + @"D:\АИС.accdb;" + "Persist Security Info=false;");
-            connection.Open();
-            var sha_pass = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(password));
-            string search = "";
-            foreach(byte symbol in sha_pass)
+            int exist = 0;
+            using (OleDbConnection connection = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + @"D:\АИС.accdb;" + "Persist Security Info=false;"))
             {
-                search += symbol.ToString("x2");
+                connection.Open();
+                byte[] sha_pass;
+                using (SHA256 coder = SHA256.Create()) 
+                { 
+                    sha_pass = coder.ComputeHash(Encoding.UTF8.GetBytes(password)); 
+                }
+                string search = "";
+                foreach (byte symbol in sha_pass)
+                {
+                    search += symbol.ToString("x2");
+                }
+                List<string> result = new List<string>();
+                using (OleDbCommand command = new OleDbCommand($"Select * From [Учётные записи] WHERE [Логин]='{login}' AND [Пароль]='{search}'", connection))
+                {
+                    OleDbDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                        result.Add(reader[3].ToString());
+                    exist = result.Count;
+                    user.Name = login;
+                    user.Role = result[0];
+                }
             }
-            command = new OleDbCommand($"Select Count(*) From [Учётные записи] WHERE [Логин]='{login}' AND [Пароль]='{search}'", connection);
-            int exist = (int)command.ExecuteScalar();
             signed = (exist == 1) ;
             if (signed)
+            {
                 this.Dispose();
+            }
         }
-        public bool Signed()
+        public User Signed()
         {
-            return signed;
+            return user;
         }
     }
 }

@@ -16,17 +16,15 @@ namespace AISench
         OleDbCommand command;
         OleDbDataAdapter reader;
         DataTable table;
-        int gbVis = 0;
-        bool signed;
+        User signed;
         public Form1()
         {
             
             InitializeComponent();
-            groupBox1.Visible = false;
             dataGridView1.Size = new Size(
-                this.ClientSize.Width - dataGridView1.Left * 2 - groupBox1.Width * gbVis,
+                this.ClientSize.Width - dataGridView1.Left * 2,
                 this.ClientSize.Height - dataGridView1.Top * 2);
-            groupBox1.Left = dataGridView1.Width + dataGridView1.Left + 5;
+            
         }
 
         private void sELECTToolStripMenuItem_Click(object sender, EventArgs e)
@@ -45,7 +43,11 @@ namespace AISench
                 signIn.ShowDialog();
                 signed = signIn.Signed();
             }
-            if (!signed) return;
+            if (signed.Name == null) return;
+            if (signed.Role == "Администратор") 
+            { 
+                правкаToolStripMenuItem.Visible = true; 
+            }
             try
             {
                 //MessageBox.Show("Connectiong...");
@@ -69,32 +71,9 @@ namespace AISench
         private void Form1_Resize(object sender, EventArgs e)
         {
             dataGridView1.Size = new Size(
-                this.ClientSize.Width - dataGridView1.Left * 2 - groupBox1.Width*gbVis,
+                this.ClientSize.Width - dataGridView1.Left * 2,
                 this.ClientSize.Height - dataGridView1.Top * 2);
-            groupBox1.Left = dataGridView1.Width + dataGridView1.Left+5;
-        }
-
-        private void показатьToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SetVisible(true);
             this.Refresh();
-        }
-
-        private void скрытьToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SetVisible(false);
-            this.Refresh();
-        }
-        void SetVisible(bool visible)
-        {
-            скрытьToolStripMenuItem.Enabled = visible;
-            показатьToolStripMenuItem.Enabled = !visible;
-            groupBox1.Visible = visible;
-            gbVis = Convert.ToInt32(visible);
-            dataGridView1.Size = new Size(
-                this.ClientSize.Width - dataGridView1.Left * 2 - groupBox1.Width * gbVis,
-                this.ClientSize.Height - dataGridView1.Top * 2);
-            groupBox1.Left = dataGridView1.Width + dataGridView1.Left + 5;
         }
 
         private void добавитьНовыйToolStripMenuItem_Click(object sender, EventArgs e)
