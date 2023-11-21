@@ -23,7 +23,7 @@ namespace AISench
     {
         public string Articul, FIO, AuthorName, Year, Price, Genre;
         public int articul, year, price;
-        public bool confirm = true;
+        public bool confirm = false;
         book result;
         public InsertForm()
         {
@@ -63,7 +63,7 @@ namespace AISench
             Genre = textBox6.Text;
             //articul,year, price;
             string status = "";
-           
+            confirm = true;
             try
             {
                 articul = Convert.ToInt32(Articul);

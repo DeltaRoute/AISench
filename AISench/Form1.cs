@@ -46,7 +46,8 @@ namespace AISench
             if (signed.Name == null) return;
             if (signed.Role == "Администратор") 
             { 
-                правкаToolStripMenuItem.Visible = true; 
+                правкаToolStripMenuItem.Visible = true;
+                запросToolStripMenuItem.Visible = true;
             }
             try
             {
@@ -65,6 +66,12 @@ namespace AISench
         private void отсоединитьсяToolStripMenuItem_Click(object sender, EventArgs e)
         {
             connection.Close();
+            if (signed.Role == "Администратор")
+            {
+                правкаToolStripMenuItem.Visible = false;
+                запросToolStripMenuItem.Visible = false;
+                signed = new User();
+            }
             toolStripStatusLabel1.Text = "Connection closed.";
         }
 
@@ -118,8 +125,8 @@ namespace AISench
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(connection.State == ConnectionState.Open)
-                connection.Close();
+            if(connection != null)
+                connection.Dispose();
         }
 
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -135,6 +142,24 @@ namespace AISench
                 command.ExecuteNonQuery();
                 toolStripStatusLabel1.Text = "Complete.";
             }
+        }
+
+        private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Информационная система книжного магазина. \nВерсия: 1.0.0.0. \nРелиз: 21.11.2023.", "О програме");
+        }
+
+        private void справкаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (signed.Role == null)
+                MessageBox.Show("Вы не авторизованы для получения справки","Внимание");
+            string message = "'Покдлючение' - авторизация пользователя и получения доступа к информационной системе." +
+                "\n'Запрос' - получение таблицы из базы данных или добавление нового элемента.";
+            if (signed.Role == "Администратор")
+            {
+                message += "\n'Правка' - изменение(или удаление) конкретного элемента базы данных";
+            }
+            MessageBox.Show(message,"Справка по использованию продукта.");
         }
     }
 }
