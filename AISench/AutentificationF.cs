@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 using System.IO;
 using System.Data.OleDb;
 
-namespace AISench
+namespace AIS
 {
     public struct User
     {

@@ -1,4 +1,4 @@
-﻿namespace AISench
+﻿namespace AIS
 {
     partial class AutentificationF
     {

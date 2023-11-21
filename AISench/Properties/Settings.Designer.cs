@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AISench.Properties
+namespace AIS.Properties
 {
 
 
