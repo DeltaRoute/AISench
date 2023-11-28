@@ -47,6 +47,7 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.сделатьОнтрольнуюТочкуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.загрузитьКонтрольнуюТочкуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -141,7 +142,8 @@
             this.помощьToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.справкаToolStripMenuItem,
             this.оПрограммеToolStripMenuItem,
-            this.сделатьОнтрольнуюТочкуToolStripMenuItem});
+            this.сделатьОнтрольнуюТочкуToolStripMenuItem,
+            this.загрузитьКонтрольнуюТочкуToolStripMenuItem});
             this.помощьToolStripMenuItem.Name = "помощьToolStripMenuItem";
             this.помощьToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             this.помощьToolStripMenuItem.Text = "Помощь";
@@ -191,9 +193,17 @@
             // сделатьОнтрольнуюТочкуToolStripMenuItem
             // 
             this.сделатьОнтрольнуюТочкуToolStripMenuItem.Name = "сделатьОнтрольнуюТочкуToolStripMenuItem";
-            this.сделатьОнтрольнуюТочкуToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.сделатьОнтрольнуюТочкуToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.сделатьОнтрольнуюТочкуToolStripMenuItem.Text = "Сделать контрольную точку";
+            this.сделатьОнтрольнуюТочкуToolStripMenuItem.Visible = false;
             this.сделатьОнтрольнуюТочкуToolStripMenuItem.Click += new System.EventHandler(this.сделатьОнтрольнуюТочкуToolStripMenuItem_Click);
+            // 
+            // загрузитьКонтрольнуюТочкуToolStripMenuItem
+            // 
+            this.загрузитьКонтрольнуюТочкуToolStripMenuItem.Name = "загрузитьКонтрольнуюТочкуToolStripMenuItem";
+            this.загрузитьКонтрольнуюТочкуToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.загрузитьКонтрольнуюТочкуToolStripMenuItem.Text = "Загрузить контрольную точку";
+            this.загрузитьКонтрольнуюТочкуToolStripMenuItem.Click += new System.EventHandler(this.загрузитьКонтрольнуюТочкуToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -238,6 +248,7 @@
         private System.Windows.Forms.ToolStripMenuItem справкаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem оПрограммеToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem сделатьОнтрольнуюТочкуToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem загрузитьКонтрольнуюТочкуToolStripMenuItem;
     }
 }
 

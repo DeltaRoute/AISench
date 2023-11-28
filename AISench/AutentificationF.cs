@@ -52,6 +52,10 @@ namespace AIS
                     OleDbDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                         result.Add(reader[3].ToString());
+                    if (result.Count == 0)
+                    {
+                        return;
+                    }
                     exist = result.Count;
                     user.Name = login;
                     user.Role = result[0];
