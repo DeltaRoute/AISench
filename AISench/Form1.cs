@@ -65,7 +65,7 @@ namespace AIS
             try
             {
                 //MessageBox.Show("Connectiong...");
-                connection = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + @"D:\АИС.accdb;" + "Persist Security Info=false;");
+                connection = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + @"АИС.accdb;" + "Persist Security Info=false;");
                 connection.Open();
                 //MessageBox.Show("Complete");
                 toolStripStatusLabel1.Text = "Connected.";
@@ -255,8 +255,8 @@ namespace AIS
                 back_up_file = OFD.FileName;
                 FileStream input = new FileStream(back_up_file, FileMode.Open);
                 FileStream output = new FileStream($"АИС.accdb", FileMode.Create);
-                GZipStream stream = new GZipStream(output, CompressionMode.Decompress);
-                input.CopyTo(output);
+                GZipStream stream = new GZipStream(input, CompressionMode.Decompress);
+                stream.CopyTo(output);
                 MessageBox.Show("Контрольная точка загружена");
                 input.Close();
                 input.Dispose();

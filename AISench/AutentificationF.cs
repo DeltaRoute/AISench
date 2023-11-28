@@ -33,7 +33,7 @@ namespace AIS
             string login = tb_login.Text;
             string password = tb_password.Text;
             int exist = 0;
-            using (OleDbConnection connection = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + @"D:\АИС.accdb;" + "Persist Security Info=false;"))
+            using (OleDbConnection connection = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + $"АИС.accdb;" + "Persist Security Info=false;"))
             {
                 connection.Open();
                 byte[] sha_pass;
