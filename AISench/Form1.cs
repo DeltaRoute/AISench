@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Threading.Tasks;
 using System.IO.Compression;
+using AISench;
 
 namespace AIS
 {
@@ -21,6 +22,7 @@ namespace AIS
         DataTable table;
         User signed;
         StreamWriter log;
+        bool recovery = false;
         
         public Form1()
         {
@@ -69,6 +71,8 @@ namespace AIS
                 connection.Open();
                 //MessageBox.Show("Complete");
                 toolStripStatusLabel1.Text = "Connected.";
+                timer1.Start();
+                timer2.Start();
             }
             catch(Exception ex)
             {
@@ -79,15 +83,14 @@ namespace AIS
         private void отсоединитьсяToolStripMenuItem_Click(object sender, EventArgs e)
         {
             connection.Close();
-            if (signed.Role == "Администратор")
-            {
-                правкаToolStripMenuItem.Visible = false;
-                запросToolStripMenuItem.Visible = false;
-                сделатьОнтрольнуюТочкуToolStripMenuItem.Visible = false;
-                загрузитьКонтрольнуюТочкуToolStripMenuItem.Visible = false;
-                signed = new User();
-            }
+            правкаToolStripMenuItem.Visible = false;
+            запросToolStripMenuItem.Visible = false;
+            сделатьОнтрольнуюТочкуToolStripMenuItem.Visible = false;
+            загрузитьКонтрольнуюТочкуToolStripMenuItem.Visible = false;
+            signed = new User();
             toolStripStatusLabel1.Text = "Connection closed.";
+            timer1.Stop();
+            timer2.Stop();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -212,20 +215,13 @@ namespace AIS
 
         private void сделатьОнтрольнуюТочкуToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            recovery = true;
             connection.Close();
-            FileStream input = new FileStream("D:\\АИС.accdb", FileMode.Open);
-            FileStream output = new FileStream($"АИС({DateTime.UtcNow.ToString().Replace(':', '-').Replace('.', '-')}).gz", FileMode.Create);
-            GZipStream stream = new GZipStream(output, CompressionMode.Compress);
-            input.CopyTo(stream);
+            BackUp.MakeBackUp();
             MessageBox.Show("Контрольная точка создана");
-            input.Close();
-            input.Dispose();
-            stream.Close();
-            stream.Dispose();
-            output.Close();
-            output.Dispose();
             connection.Open();
             LOG(signed, "SnapShot");
+            recovery = false;
         }
 
         private void загрузитьКонтрольнуюТочкуToolStripMenuItem_Click(object sender, EventArgs e)
@@ -233,41 +229,36 @@ namespace AIS
             OpenFileDialog OFD = new OpenFileDialog();
             connection.Close();
             OFD.Filter = "BackUpDB|*.gz|All files|*.*";
-            string back_up_file = "";
             DialogResult warning = MessageBox.Show("Сделать копию базы данных?", "Предупреждение", MessageBoxButtons.OKCancel);
             if (warning == DialogResult.OK)
             {
-                FileStream input = new FileStream("D:\\АИС.accdb", FileMode.Open);
-                FileStream output = new FileStream($"АИС({DateTime.UtcNow.ToString().Replace(':', '-').Replace('.', '-')}).gz", FileMode.Create);
-                GZipStream stream = new GZipStream(output, CompressionMode.Compress);
-                input.CopyTo(stream);
+                BackUp.MakeBackUp();
                 MessageBox.Show("Контрольная точка создана");
-                input.Close();
-                input.Dispose();
-                stream.Close();
-                stream.Dispose();
-                output.Close();
-                output.Dispose();
                 LOG(signed, "SnapShot");
             }
             if (OFD.ShowDialog() == DialogResult.OK)
             {
-                back_up_file = OFD.FileName;
-                FileStream input = new FileStream(back_up_file, FileMode.Open);
-                FileStream output = new FileStream($"АИС.accdb", FileMode.Create);
-                GZipStream stream = new GZipStream(input, CompressionMode.Decompress);
-                stream.CopyTo(output);
+                BackUp.LoadBackUp(OFD.FileName);
                 MessageBox.Show("Контрольная точка загружена");
-                input.Close();
-                input.Dispose();
-                stream.Close();
-                stream.Dispose();
-                output.Close();
-                output.Dispose();
                 LOG(signed, "DeSnapShot");
             }
             OFD.Dispose();
             connection.Open();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (!recovery)
+            {
+                connection.Close();
+                BackUp.MakeBackUp();
+                connection.Open();
+            }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            BackUp.ClearOldBackUp();
         }
     }
 }
